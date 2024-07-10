@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro do condomínio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      
+      /*Mensagem de erro ao inserir dado inválido*/
+      .span-required{
+        display: none;
+        font-size: 12px;
+        color: #e63636;
+      }
+
+      /*Remove setas de incremento/decremento em navegadores Chromium based*/
+      input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Remove setas de incremento/decremento em navegadores Firefox */
+        input[type=number] {
+          appearance: textfield;
+        }
+    </style>
+</head>
+
+<!--Fundo, atrás do formulário-->
+<body  id="body" class="bg-slate-200" style="margin: auto; width: 90%;">
+
+  <!--mensaggem de confirmação, que o formulário foi enviado-->
+<div id="sucessMessage" aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6" style=" display: none;">
+  <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+    <div class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">Salvo com sucesso!</p>
+            <p class="mt-1 text-sm text-gray-500">Os seus dados foram salvos com sucesso!</p>
+          </div>
+          <div class="ml-4 flex flex-shrink-0">
+            <button type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="fechar">
+              <span class="sr-only">Fechar</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+          <!--Explicação à esquerda-->
+            <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+              <div class="px-4 sm:px-0">
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Localidade e Especificações</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Insira aqui as informações sobre a localização e as especificações do condomínio.</p>
+              </div>
+          
+              <!--Começo do formulário-->
+              <form id="formEl"  class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" style="border-radius: 20px; margin-bottom: 2%">
+                <div class="px-4 py-6 sm:p-8">
+                  <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                      <label for="nome" class="block text-sm font-medium leading-6 text-gray-900">Nome do Condomínio</label>
+                      <div class="mt-2">
+                        <input type="text" name="nomecondo" id="nome" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="text-align: center;" placeholder="Ex: AlphaVille" oninput="nameValidate()" required>
+                        <span class="span-required">Nome deve ter pelo menos 2 Letras</span>
+                      </div>
+                    </div>
+          
+                    <div class="sm:col-span-3">
+                      <label for="cnpj" class="block text-sm font-medium leading-6 text-gray-900">CNPJ</label>
+                      <div class="mt-2">
+                        <input type="text" name="cnpj" id="cnpj" autocomplete="off" maxlength="18" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="width: auto; text-align: center;" placeholder="Ex: 00.000.000/0001-00" oninput="variaveisCombinadas()" required>
+                        <span id="x" class="span-required" pattern="\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}" maxlength="18">O CNPJ é inválido</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="cep" class="block text-sm font-medium leading-6 text-gray-900">CEP</label>
+                        <div class="mt-2">
+                          <input oninput="combineVariables()" type="text" name="cep" id="cep" autocomplete="off" maxlength="8" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="width: auto; text-align: center;" maxlength="9" placeholder="Ex: 00000000" required>
+                          <span class="span-required" id="message">O CEP é inválido</span>
+                        </div>
+                      </div>
+
+                      <div class="sm:col-span-2 sm:col-start-1">
+                        <label for="bairro" class="block text-sm font-medium leading-6 text-gray-900">Bairro</label>
+                        <div class="mt-2">
+                          <input type="text" name="bairro" id="bairro" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="text-align: center;" placeholder="Ex: Liberdade" oninput="bairroValidate()" required>
+                          <span class="span-required">O bairro deve ter pelo menos 3 letras</span>
+                        </div>
+                      </div>
+          
+                    <div class="sm:col-span-4">
+                      <label for="logradouro" class="block text-sm font-medium leading-6 text-gray-900">Logradouro</label>
+                      <div class="mt-2 ">
+                        <input id="logradouro" name="logradouro" autocomplete="street-address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="text-align: center; width: 70%;" placeholder="Ex: Rua das flores" oninput="ruaValidate()" required>
+                        <span class="span-required">O logradouro deve ter pelo menos 3 letras</span> 
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                      <label for="numero" class="block text-sm font-medium leading-6 text-gray-900">Número</label>
+                      <div class="mt-2">
+                        <input type="number" id="numero" name="numero" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="text-align: center; width: 20%;" oninput="numeroValidate()" required> 
+                        <span class="span-required">Insira o número do condomínio</span>
+                      </div>
+                    </div>
+          
+                    <div class="sm:col-span-2 sm:col-start-1">
+                        <label for="cidade" class="block text-sm font-medium leading-6 text-gray-900">Cidade</label>
+                        <div class="mt-2">
+                          <input type="text" name="cidade" id="cidade" autocomplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" placeholder="Ex: São Paulo" style="text-align: center;" oninput="cidadeValidate()" required>
+                          <span class="span-required">O nome da cidade deve ter 3 dígitos</span>
+                        </div>
+                      </div>
+
+                    <div class="sm:col-span-4">
+                      <label for="uf" class="block text-sm font-medium leading-6 text-gray-900">Estado</label>
+                      <div class="mt-2">
+                        <select id="uf" name="uf" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="estadoValidate()" required>
+                            <option value=""> -- Selecione uma opção -- </option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                        <span class="span-required">Selecione um Estado</span>
+                      </div>  
+                     </div>
+
+                    
+                     
+                     <div class="sm:col-span-3">
+                      <label for="torre" class="block text-sm font-medium leading-6 text-gray-900">Número de Torres/Blocos</label>
+                      <div class="mt-2">
+                        <input type="number" name="torre" id="torre" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300     placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="width: 50px; text-align: center;" oninput="torreValidate()" required>
+                        <span class="span-required">Insira o número de torres/blocos</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="un" class="block text-sm font-medium leading-6 text-gray-900">Número de Unidades</label>
+                      <div class="mt-2">
+                        <input type="number" name="un" id="un" autocomplete="off" maxlength="18" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 required" style="width: 50px; text-align: center;" oninput="unidadesValidate()" required>
+                        <span class="span-required">Insira o número de unidades</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="elevador" class="block text-sm font-medium leading-6 text-gray-900">Tem Elevador?</label>
+                      <div class="mt-2">
+                          <select id="elevador" name="elevador" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="elevadorValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não elevador</span>
+                      </div>
+                    </div>  
+
+                    <div class="sm:col-span-3">
+                      <label for="portaria" class="block text-sm font-medium leading-6 text-gray-900">Tem Portaria 24h?</label>
+                      <div class="mt-2">
+                          <select id="portaria" name="portaria" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="portariaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não portaria 24h</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="canalizado" class="block text-sm font-medium leading-6 text-gray-900">Tem Gás Canalizado?</label>
+                      <div class="mt-2">
+                          <select id="canalizado" name="canalizado" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="canalizadoValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não gás canalizado</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="individual" class="block text-sm font-medium leading-6 text-gray-900">Tem Gás Individualizado?</label>
+                      <div class="mt-2">
+                          <select id="individual" name="inidividual" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="gindividualValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não gás individualizado</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="canalizado" class="block text-sm font-medium leading-6 text-gray-900">Tem Água Individualizada?</label>
+                      <div class="mt-2">
+                          <select id="agua" name="agua" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="aindividualValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não água individualizada</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="poço" class="block text-sm font-medium leading-6 text-gray-900">Tem Poço Artesiano/Semi?</label>
+                      <div class="mt-2">
+                          <select id="poço" name="poço" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="poçoValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não poço artesiano</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="aqagua" class="block text-sm font-medium leading-6 text-gray-900">Tem Aquecimento de Água?</label>
+                      <div class="mt-2">
+                          <select id="aqagua" name="aqagua" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="aqaguaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não aquecimento de água</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="aqpiscina" class="block text-sm font-medium leading-6 text-gray-900">Tem Aquecimento na Piscina?</label>
+                      <div class="mt-2">
+                          <select id="aqpiscina" name="aqipiscina" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="aqpiscinaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não aquecimento da piscina</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="solar" class="block text-sm font-medium leading-6 text-gray-900">Tem Placa Solar?</label>
+                      <div class="mt-2">
+                          <select id="solar" name="solar" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="placaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não placa solar</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="seguranças" class="block text-sm font-medium leading-6 text-gray-900">Tem Seguranças?</label>
+                      <div class="mt-2">
+                          <select id="seguranças" name="seguranças" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="segurançasValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não seguranças</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="cftv" class="block text-sm font-medium leading-6 text-gray-900">Tem CFTV?</label>
+                      <div class="mt-2">
+                          <select id="cftv" name="cftv" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="cftvValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não circuito fechado de televisão</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="controle" class="block text-sm font-medium leading-6 text-gray-900">Tem Controle de Acesso?</label>
+                      <div class="mt-2">
+                          <select id="controle" name="controle" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="cdaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não controle de acesso</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="ivas" class="block text-sm font-medium leading-6 text-gray-900">Tem IVAs?</label>
+                      <div class="mt-2">
+                          <select id="ivas" name="ivas" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="ivaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não IVAs</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="cerca" class="block text-sm font-medium leading-6 text-gray-900">Tem Cerca Elétrica?</label>
+                      <div class="mt-2">
+                          <select id="cerca" name="cerca" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="cercaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não cerca elétrica</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="concertina" class="block text-sm font-medium leading-6 text-gray-900">Tem Concertina?</label>
+                      <div class="mt-2">
+                          <select id="concertina" name="concertina" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;"  oninput="concertinaValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não concertilha</span>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                      <label for="alarme" class="block text-sm font-medium leading-6 text-gray-900">Tem Alarme?</label>
+                      <div class="mt-2">
+                          <select id="alarme" name="alarme" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 required" style="text-align: center; width: 60%;" oninput="alarmeValidate()" required>
+                              <option value=""> -- Selecione uma opção -- </option>
+                              <option value="NÃO">Não</option>
+                              <option value="SIM">Sim</option>
+                          </select>
+                          <span class="span-required">Selecione se o condomínio tem ou não alarme</span>
+                      </div>
+                    </div>
+
+             </div>
+             </div>
+             <!--Fim do formulario-->
+
+             <!--Botões de submit e retorno-->
+             <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+              <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancelar</button>
+              <button type="submit" class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" id="botao" onclick="">Salvar</button>
+             </div>
+           </div>
+         </div>
+
+            </form>
+            </div>
+            </div>
+
+            <!--Script de validação-->
+         <script src="cadastro-condominio-validaçao.js"></script>
+
+</body>
+</html>
