@@ -72,7 +72,13 @@ cnpj.addEventListener('keypress', () => {
                 sucessmessage.style.display = 'block';
                 const formData = new FormData(formEl);
                 const data = Object.fromEntries(formData);
-                console.log(data);
+                fetch('https://reqres.in/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(res => res.json()).then(data => console.log(data))
             } else{
                 alert('Opa, algo deu errado. confira as informações que você passou')
             }
