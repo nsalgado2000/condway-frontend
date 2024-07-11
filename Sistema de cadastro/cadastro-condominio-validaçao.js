@@ -64,7 +64,7 @@ cnpj.addEventListener('keypress', () => {
         const campos = document.querySelectorAll('.required')
         const spans = document.querySelectorAll('.span-required')
 
-//Set verificação de erro ao fazer submit 
+//Set verificaçao de erro ao fazer submit 
         formEl.addEventListener('submit', (event) =>{
             event.preventDefault();
             let sucessmessage = document.getElementById('sucessMessage')
