@@ -78,7 +78,16 @@ cnpj.addEventListener('keypress', () => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
-                }).then(res => res.json()).then(data => console.log(data))
+                }).then(res => res.json()).then(data => console.log(data));
+                
+                // Armazena os dados no Local Storage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        users.push(data);
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Redireciona para a página de data table
+        window.location.href = 'condway\datatable\datatable.html';
+                
             } else{
                 alert('Opa, algo deu errado. confira as informações que você passou')
             }
