@@ -86,7 +86,7 @@ cnpj.addEventListener('keypress', () => {
         localStorage.setItem('users', JSON.stringify(users));
 
         // Redireciona para a página de data table
-        window.location.href = 'condway\datatable\datatable.html';
+        window.location.href = 'datatable.html';
                 
             } else{
                 alert('Opa, algo deu errado. confira as informações que você passou')
