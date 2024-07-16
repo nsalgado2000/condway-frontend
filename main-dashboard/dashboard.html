@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="absolute inset-x-0 top-0 z-50 flex h-16 border-b border-gray-900/10">
@@ -31,15 +32,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
             </button>
-            <a href="#" class="-m-1.5 p-1.5">
-              <span class="sr-only">Your profile</span>
-              <img class="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-            </a>
+            
           </div>
         </div>
-        <!-- Mobile menu, show/hide based on menu open state. -->
+
+        <!--
+         Mobile menu, show/hide based on menu open state.
         <div class="lg:hidden" role="dialog" aria-modal="true">
-          <!-- Background backdrop, show/hide based on slide-over state. -->
+           Background backdrop, show/hide based on slide-over state. 
           <div class="fixed inset-0 z-50"></div>
           <div class="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-white px-4 pb-6 sm:max-w-sm sm:px-6 sm:ring-1 sm:ring-gray-900/10">
             <div class="-ml-0.5 flex h-16 items-center gap-x-6">
@@ -63,7 +63,9 @@
               <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Expenses</a>
             </div>
           </div>
-        </div>
+        </div> 
+
+        -->
       </header>
       
       <main>
@@ -86,7 +88,14 @@
             </div>
           </header>
       
-          <!-- Stats -->
+          
+        <canvas id="grafico1" style="width: 500px; height: 500px;">
+
+        </canvas>
+
+          <!--
+
+          Stats
           <div class="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
             <dl class="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
               <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8">
@@ -112,6 +121,8 @@
             </dl>
           </div>
       
+        -->
+
           <div class="absolute left-0 top-full -z-10 mt-96 origin-top-left translate-y-40 -rotate-90 transform-gpu opacity-20 blur-3xl sm:left-1/2 sm:-ml-96 sm:-mt-10 sm:translate-y-0 sm:rotate-0 sm:transform-gpu sm:opacity-50" aria-hidden="true">
             <div class="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#FF80B5] to-[#9089FC]" style="clip-path: polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)"></div>
           </div>
@@ -410,5 +421,6 @@
           </div>
         </div>
       </main>
+      <script src="dashboard.js"></script>
 </body>
 </html>
