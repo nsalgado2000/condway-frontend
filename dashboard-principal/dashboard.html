@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body style="background-color: #E2E8F0;">
+<body style="background-color: #E2E8F0;" id="body">
     <header class="absolute inset-x-0 top-0 z-50 flex h-16 border-b border-gray-900/10">
         <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div class="flex flex-1 items-center gap-x-6">
@@ -40,7 +40,7 @@
           
       </div>
 
-      <div class="grid grid-cols-1 bg-white sm:grid-cols-2 lg:grid-cols-4" style="margin-left: 25px; margin-right: 25px; margin-top: 25px; border-radius: 10px">
+      <div class="grid grid-cols-1 bg-white sm:grid-cols-2 lg:grid-cols-4" style="margin-left: 25px; margin-right: 25px; margin-top: 25px; border-radius: 10px" id="resumo">
         <div class="border-t border-white/5 px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm font-medium leading-6 text-gray-800">Valor arrecadado esse mês</p>
           <p class="mt-2 flex items-baseline gap-x-2">
@@ -69,7 +69,8 @@
 
 
         <div style="display: inline;">
-          <div style="width: 800px; height: auto; margin-left: 25px; margin-top: 25px; border-radius: 10px; background-color:white; padding: 20px; display: inline-block; float: left">
+          <div style="width: 800px; height: auto; margin-left: 25px; margin-top: 25px; border-radius: 10px; background-color:white; padding: 20px; float: left" id="graficobarra">
+
             <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
               <h1 class="text-base font-semibold leading-7 text-gray-900">Despesas</h1>
               <div class="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
@@ -77,15 +78,42 @@
                 <a href="#" class="text-gray-700">Últimos 30 dias</a>
                 <a href="#" class="text-gray-700">Máximo</a>
               </div>
-            </div>
+           </div>
+
         <canvas id="grafico1">
         </canvas>
-        </div>  
-        <div style="display: inline-block; background-color: white; width: 635px; height: 445px; border-radius: 10px; margin-left: 50px; margin-top: 25px; text-align: center;">
+        </div>
+        
+        <div style="display: inline-block; background-color: white; width: 635px; height: 445px; border-radius: 10px; margin-left: 50px; margin-top: 25px; text-align: center;" id="mensagens">
           <h1 class="text-slate-700" style="padding-top: 10px; font-size: 1.5em ">Mensagens</h1>
-          <p class="text-slate-400">Não existem mensagens pendentes! </p>
-        </div>  
-      </div>
+
+
+          <div style="display: none;">
+          <div style="background-color: white; width: 94%; height: 25%; margin-left: 3%; margin-right: 3%; margin-top: 2%; margin-bottom: 2%; border-radius: 10px; border-style: solid; border-color: black; border-width: thin">
+            <p>Membro</p>
+            <hr style="margin-top: 1%;">
+            <p>Mensagem recebida!</p>
+          </div>
+
+          <div style="background-color: white; width: 94%; height: 25%; margin-left: 3%; margin-right: 3%; border-radius: 10px; margin-bottom: 2%; border-style: solid; border-color: black; border-width: thin">
+            <p>Membro</p>
+            <hr style="margin-top: 1%;">
+            <p>Mensagem recebida!</p>
+          </div>
+
+          <div style="background-color: white; width: 94%; height: 25%; margin-left: 3%; margin-right: 3%; border-radius: 10px; border-style: solid; border-color: black; border-width: thin">
+            <p>Membro</p>
+            <hr style="margin-top: 1%;">
+            <div>
+            <p>Mensagem recebida!</p>
+            </div>
+          </div>
+
+        </div>
+
+          <p class="text-slate-400" style="display: none;">Não existem mensagens pendentes! </p>
+        </div> 
+       </div>
 
 
       <script src="dashboard.js"></script>
